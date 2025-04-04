@@ -1,43 +1,41 @@
+import {useNavigation} from '@react-navigation/native';
 import * as React from 'react';
-import {StyleSheet, View, Button, Text} from 'react-native';
+import {Button, StyleSheet, Text, View} from 'react-native';
 import {
+  CaptureEventType,
   CaptureProtection,
-  CaptureProtectionModuleStatus,
   useCaptureProtection,
 } from 'react-native-capture-protection';
-import {useNavigation} from '@react-navigation/native';
 export default function Main() {
-  const {isPrevent, status} = useCaptureProtection();
+  const {protectionStatus, status} = useCaptureProtection();
   const navigation = useNavigation<any>();
 
   React.useEffect(() => {
-    console.log('Main Prevent Status is', isPrevent);
-  }, [isPrevent]);
-  React.useEffect(() => {
-    console.log(
-      'Main Prevent Status is',
-      status ? CaptureProtectionModuleStatus?.[status] : undefined,
-    );
+    console.log('Main Prevent Status is', status);
   }, [status]);
+  React.useEffect(() => {
+    console.log('Main protectionStatus is', protectionStatus);
+  }, [protectionStatus]);
 
   return (
     <View style={styles.container}>
-      <Text style={{color: isPrevent?.record ? 'blue' : 'black'}}>
-        {'Record Prevent : ' + isPrevent?.record}
+      <Text style={{color: protectionStatus?.record ? 'blue' : 'black'}}>
+        {'Record Prevent : ' + protectionStatus?.record}
       </Text>
-      <Text style={{color: isPrevent?.screenshot ? 'blue' : 'black'}}>
-        {'Screenshot Prevent : ' + isPrevent?.screenshot}
+      <Text style={{color: protectionStatus?.screenshot ? 'blue' : 'black'}}>
+        {'Screenshot Prevent : ' + protectionStatus?.screenshot}
       </Text>
       <Text style={{color: 'black'}}>
-        {'Status : ' +
-          (status ? CaptureProtectionModuleStatus?.[status] : undefined)}
+        {'Status : ' + (status ? CaptureEventType?.[status] : undefined)}
       </Text>
       <Button
         title="set Record Protect Screen by Text"
         onPress={() => {
-          CaptureProtection.setScreenRecordScreenWithText?.(
-            'This is Text Message!',
-          );
+          CaptureProtection.prevent?.({
+            record: {
+              text: 'This is Text Message!',
+            },
+          });
         }}
       />
       <Button
@@ -49,37 +47,37 @@ export default function Main() {
       <Button
         title="allow Record"
         onPress={() => {
-          CaptureProtection.allowScreenRecord();
+          CaptureProtection.allow({record: true});
         }}
       />
       <Button
         title="prevent Record"
         onPress={() => {
-          CaptureProtection.preventScreenRecord();
+          CaptureProtection.prevent({record: true});
         }}
       />
       <Button
         title="allow Screenshot"
         onPress={() => {
-          CaptureProtection.allowScreenshot();
+          CaptureProtection.allow({screenshot: true});
         }}
       />
       <Button
         title="prevent Screenshot"
         onPress={() => {
-          CaptureProtection.preventScreenshot();
+          CaptureProtection.prevent({screenshot: true});
         }}
       />
       <Button
         title="allow background"
         onPress={() => {
-          CaptureProtection.allowBackground();
+          CaptureProtection.allow({appSwitcher: true});
         }}
       />
       <Button
         title="prevent background"
         onPress={() => {
-          CaptureProtection.preventBackground();
+          CaptureProtection.prevent({appSwitcher: true});
         }}
       />
     </View>
