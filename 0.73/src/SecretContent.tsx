@@ -1,33 +1,31 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import * as React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {
-  CaptureProtectionModuleStatus,
+  CaptureEventType,
   useCaptureProtection,
 } from 'react-native-capture-protection';
 
 export default function SecretContent() {
-  const { isPrevent, status, bindProtection, releaseProtection } =
-    useCaptureProtection();
+  const {protectionStatus, status, prevent, allow} = useCaptureProtection();
 
   React.useEffect(() => {
-    bindProtection();
+    prevent();
     return () => {
-      releaseProtection(true);
+      allow();
     };
   }, []);
 
   return (
     <View style={styles.container}>
-      <Text style={{ color: isPrevent?.record ? 'blue' : 'black' }}>
-        {'Record Prevent : ' + isPrevent?.record}
+      <Text style={{color: protectionStatus?.record ? 'blue' : 'black'}}>
+        {'Record Prevent : ' + protectionStatus?.record}
       </Text>
-      <Text style={{ color: isPrevent?.screenshot ? 'blue' : 'black' }}>
-        {'Screenshot Prevent : ' + isPrevent?.screenshot}
+      <Text style={{color: protectionStatus?.screenshot ? 'blue' : 'black'}}>
+        {'Screenshot Prevent : ' + protectionStatus?.screenshot}
       </Text>
-      <Text style={{ color: 'black' }}>
-        {'Status : ' +
-          (status ? CaptureProtectionModuleStatus?.[status] : undefined)}
+      <Text style={{color: 'black'}}>
+        {'Status : ' + (status ? CaptureEventType?.[status] : undefined)}
       </Text>
       <Text>it is Screct View!!</Text>
     </View>

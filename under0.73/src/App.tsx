@@ -1,7 +1,7 @@
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import * as React from 'react';
-import { CaptureProtectionProvider } from 'react-native-capture-protection';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {CaptureProtectionProvider} from 'react-native-capture-protection';
 import Main from './Main';
 import SecretContent from './SecretContent';
 
@@ -13,8 +13,7 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName={'Main'}
-          screenOptions={{ headerShown: false }}
-        >
+          screenOptions={{headerShown: false}}>
           <Stack.Screen name="Main" component={Main} />
           <Stack.Screen name="SecretContent" component={SecretContent} />
         </Stack.Navigator>
